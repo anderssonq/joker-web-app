@@ -28,6 +28,7 @@ How to use unreleased title:
 
 ## [Unreleased]
 ### Added
+- [TEST-5](https://skyagile.atlassian.net/browse/TEST-5) feat(components): add JokeCard, AppRating and  AppJokeList components
 - [TEST-4](https://skyagile.atlassian.net/browse/TEST-4) feat(components): enhance AppButton with color variants, new JokeTypeSelect and AppToolBar components
 - [TEST-3](https://skyagile.atlassian.net/browse/TEST-3) feat(jokes): add jokes module, API service integration, pinia jokesType and card/header components
 - [TEST-2](https://skyagile.atlassian.net/browse/TEST-2) feat(jokes): add jokes module, API service integration, pinia jokesType and card/header components

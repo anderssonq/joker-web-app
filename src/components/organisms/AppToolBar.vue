@@ -13,7 +13,7 @@ import AppButton from '../atoms/AppButton.vue';
             </div>
             <div class="tool-bar-content">
                 <JokeTypeSelect />
-                <AppButton text="Add a new Joke 😜" color="purple" />
+                <AppButton text="Add a new Joke 😜" />
             </div>
         </AppCard>
     </div>

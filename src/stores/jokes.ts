@@ -1,13 +1,13 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import { getJokeTypes } from "@/services/jokeService";
+import { getJokeTypes, getPaginatedJokes, getJokesByType } from "@/services/jokeService";
 import type { Joke } from "@/interfaces/joke.interface";
 
 export const useJokesStore = defineStore("jokes", () => {
   const jokes = ref<Joke[]>([]);
 
   const types = ref<string[]>([]);
-  const typeSelected = ref<string>("random");
+  const typeSelected = ref<string>("general");
 
   const loading = ref(false);
   const error = ref<string | null>(null);
@@ -21,6 +21,23 @@ export const useJokesStore = defineStore("jokes", () => {
       return _types;
     } catch (error: Error | unknown) {
       const _error = (error as Error).message || "Error fetching joke types";
+      setError(_error);
+      console.error(_error);
+      return [];
+    } finally {
+      setLoading(false);
+    }
+  }
+
+    async function loadJokesByType(counter: number = 0): Promise<Joke[]> {
+    setLoading(true);
+    setError(null);
+    try {
+      const _jokes = await getJokesByType(typeSelected.value, counter);
+      setJokes(_jokes);
+      return _jokes;
+    } catch (error: Error | unknown) {
+      const _error = (error as Error).message || "Error fetching paginated jokes";
       setError(_error);
       console.error(_error);
       return [];
@@ -73,9 +90,11 @@ export const useJokesStore = defineStore("jokes", () => {
 
   return {
     loadJokeTypes,
-    getJokes,
     getTypes,
-
+    
+    loadJokesByType,
+    getJokes,
+    
     setTypeSelected,
     getTypeSelected,
 
