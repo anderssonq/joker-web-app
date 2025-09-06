@@ -5,11 +5,14 @@ import type { Joke } from "@/interfaces/joke.interface";
 
 export const useJokesStore = defineStore("jokes", () => {
   const jokes = ref<Joke[]>([]);
+
   const types = ref<string[]>([]);
+  const typeSelected = ref<string>("random");
+
   const loading = ref(false);
   const error = ref<string | null>(null);
 
-  async function loadJokeTypes(): Promise<string[] | void> {
+  async function loadJokeTypes(): Promise<string[]> {
     setLoading(true);
     setError(null);
     try {
@@ -17,9 +20,10 @@ export const useJokesStore = defineStore("jokes", () => {
       setTypes(_types);
       return _types;
     } catch (error: Error | unknown) {
-      const _error = (error  as Error).message || "Error fetching joke types";
+      const _error = (error as Error).message || "Error fetching joke types";
       setError(_error);
       console.error(_error);
+      return [];
     } finally {
       setLoading(false);
     }
@@ -43,6 +47,14 @@ export const useJokesStore = defineStore("jokes", () => {
     return types.value;
   }
 
+  function setTypeSelected(_type: string) {
+    typeSelected.value = _type;
+  }
+
+  function getTypeSelected(): string {
+    return typeSelected.value;
+  }
+
   function setLoading(_loading: boolean) {
     loading.value = _loading;
   }
@@ -63,7 +75,13 @@ export const useJokesStore = defineStore("jokes", () => {
     loadJokeTypes,
     getJokes,
     getTypes,
+
+    setTypeSelected,
+    getTypeSelected,
+
+    setLoading,
     getLoading,
+
     getError,
   };
 });

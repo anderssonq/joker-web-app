@@ -28,5 +28,7 @@ How to use unreleased title:
 
 ## [Unreleased]
 ### Added
+- [TEST-4](https://skyagile.atlassian.net/browse/TEST-4) feat(components): enhance AppButton with color variants, new JokeTypeSelect and AppToolBar components
+- [TEST-3](https://skyagile.atlassian.net/browse/TEST-3) feat(jokes): add jokes module, API service integration, pinia jokesType and card/header components
 - [TEST-2](https://skyagile.atlassian.net/browse/TEST-2) feat(jokes): add jokes module, API service integration, pinia jokesType and card/header components
-- [TEST-1](https://skyagile.atlassian.net/browse/TEST-1) chore(init): initialize project structure with Vue 3 + Vite + TypeScript setup
+- [TEST-1](https://skyagile.atlassian.net/browse/TEST-1) chore(init): initialize project structure with Vue 3 + Vite + TypeScript

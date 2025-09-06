@@ -1,12 +1,9 @@
 <script setup lang="ts">
 import JokesPage from './page/JokesPage.vue';
-import { useJokesStore } from './stores/jokes';
 import { onMounted } from 'vue';
 
-const store = useJokesStore();
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 onMounted(async () => {
-  const response = await store.loadJokeTypes();
-  console.log('loadJokeTypes:', response);
 });
 
 </script>
