@@ -8,10 +8,18 @@ const props = withDefaults(defineProps<Props>(), {
     text: 'Press me',
     color: 'purple'
 });
+
+const emit = defineEmits<{
+    click: []
+}>();
+
+function handleClick() {
+    emit('click');
+}
 </script>
 
 <template>
-    <button class="app-button" :class="`app-button--${props.color}`">
+    <button class="app-button" :class="`app-button--${props.color}`" @click="handleClick">
         {{ props.text }}
     </button>
 </template>

@@ -1,6 +1,6 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import { getJokeTypes, getPaginatedJokes, getJokesByType } from "@/services/jokeService";
+import { getJokeTypes, getJokesAll } from "@/services/jokeService";
 import type { Joke } from "@/interfaces/joke.interface";
 
 export const useJokesStore = defineStore("jokes", () => {
@@ -11,6 +11,9 @@ export const useJokesStore = defineStore("jokes", () => {
 
   const loading = ref(false);
   const error = ref<string | null>(null);
+
+  const currentPage = ref(1);
+  const perPage = ref(5);
 
   async function loadJokeTypes(): Promise<string[]> {
     setLoading(true);
@@ -29,15 +32,15 @@ export const useJokesStore = defineStore("jokes", () => {
     }
   }
 
-    async function loadJokesByType(counter: number = 0): Promise<Joke[]> {
+  async function loadJokes(): Promise<Joke[]> {
     setLoading(true);
     setError(null);
     try {
-      const _jokes = await getJokesByType(typeSelected.value, counter);
+      const _jokes = await getJokesAll();
       setJokes(_jokes);
       return _jokes;
     } catch (error: Error | unknown) {
-      const _error = (error as Error).message || "Error fetching paginated jokes";
+      const _error = (error as Error).message || "Error fetching jokes";
       setError(_error);
       console.error(_error);
       return [];
@@ -46,14 +49,43 @@ export const useJokesStore = defineStore("jokes", () => {
     }
   }
 
-  // TODO: Implement other actions to fetch jokes, fetch by type, pagination, etc.
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  function paginatedJokes(): Joke[] {
+    const start = (currentPage.value - 1) * perPage.value;
+    let filteredJokes = getJokes();
+    
+    // Filter by type if a specific type is selected
+    if (typeSelected.value && typeSelected.value !== 'general') {
+      filteredJokes = filteredJokes.filter(joke => joke.type === typeSelected.value);
+    }
+    
+    return filteredJokes.slice(start, start + perPage.value);
+  }
+
+  function getTotalPages(): number {
+    let filteredJokes = jokes.value;
+    
+    // Filter by type if a specific type is selected
+    if (typeSelected.value && typeSelected.value !== 'general') {
+      filteredJokes = filteredJokes.filter(joke => joke.type === typeSelected.value);
+    }
+    
+    return Math.ceil(filteredJokes.length / perPage.value);
+  }
+
   function setJokes(_jokes: Joke[]) {
     jokes.value = _jokes;
   }
 
   function getJokes(): Joke[] {
     return jokes.value;
+  }
+
+  function setCurrentPage(page: number): void {
+    currentPage.value = page;
+  }
+
+  function getCurrentPage(): number {
+    return currentPage.value;
   }
 
   function setTypes(_types: string[]) {
@@ -89,18 +121,25 @@ export const useJokesStore = defineStore("jokes", () => {
   }
 
   return {
+    // Joke Types
     loadJokeTypes,
     getTypes,
-    
-    loadJokesByType,
-    getJokes,
-    
     setTypeSelected,
     getTypeSelected,
 
+    // Jokes items
+    loadJokes,
+    getJokes,
+
+    // Pagination
+    setCurrentPage,
+    getCurrentPage,
+    paginatedJokes,
+    getTotalPages,
+
+    // Loading & Error
     setLoading,
     getLoading,
-
     getError,
   };
 });

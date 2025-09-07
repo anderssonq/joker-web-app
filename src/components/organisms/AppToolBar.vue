@@ -2,6 +2,7 @@
 import AppCard from '../atoms/AppCard.vue';
 import JokeTypeSelect from '../molecules/JokeTypeSelect.vue';
 import AppButton from '../atoms/AppButton.vue';
+import AppPagination from '@/components/molecules/AppPagination.vue';
 
 </script>
 
@@ -14,6 +15,9 @@ import AppButton from '../atoms/AppButton.vue';
             <div class="tool-bar-content">
                 <JokeTypeSelect />
                 <AppButton text="Add a new Joke 😜" />
+            </div>
+            <div class="tool-bar-footer">
+                <AppPagination :maxVisiblePages="5" />
             </div>
         </AppCard>
     </div>

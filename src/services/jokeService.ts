@@ -26,6 +26,12 @@ export async function getJokeById(id: number): Promise<Joke> {
   return await res.json();
 }
 
+export async function getJokesAll(): Promise<Joke[]> {
+  const res = await fetch(`${BASE_URL}/jokes/random/451`);
+  if (!res.ok) throw new Error("Error fetching jokes");
+  return await res.json();
+}
+
 export async function getPaginatedJokes(
   page: number,
   pageSize: number,

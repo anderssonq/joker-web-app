@@ -9,8 +9,7 @@ const { loadJokeTypes, setTypeSelected, getTypeSelected } = store;
 const types = ref<string[]>([]);
 
 onMounted(async () => {
-    const _types = await loadJokeTypes();
-    types.value = ['random', ...(_types || [])];
+    types.value = await loadJokeTypes();
 });
 
 </script>
