@@ -60,6 +60,23 @@ export const useJokesStore = defineStore("jokes", () => {
     }
   }
 
+  function setJokeRatingById(id: number, rating: number) {
+    const _jokes = getJokes();
+    const joke = _jokes.find(joke => joke.id === id);
+    if (joke) {
+      joke.rating = rating;
+    }
+  }
+
+  function removeJokeById(id: number) {
+    const _jokes = getJokes();
+    const jokeIndex = _jokes.findIndex(joke => joke.id === id);
+    if (jokeIndex !== -1) {
+      _jokes.splice(jokeIndex, 1);
+      setJokes(_jokes);
+    }
+  }
+
   function paginatedJokes(): Joke[] {
     const start = (currentPage.value - 1) * perPage.value;
     let filteredJokes = [...getJokes()]; // Create a copy to avoid mutating original
@@ -185,6 +202,10 @@ export const useJokesStore = defineStore("jokes", () => {
     getTypes,
     setTypeSelected,
     getTypeSelected,
+
+    // jokes mutation
+    setJokeRatingById,
+    removeJokeById,
 
     // Jokes items
     loadJokes,

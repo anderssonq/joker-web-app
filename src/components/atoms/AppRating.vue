@@ -7,8 +7,12 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  maxRating: 5
+  maxRating: 5,
 });
+
+const emit = defineEmits<{
+  ratingSelected: [rating: number]
+}>();
 
 const normalizedRating = computed(() => {
   return Math.max(0, Math.min(props.rating, props.maxRating));
@@ -24,16 +28,17 @@ const stars = computed(() => {
   }
   return starArray;
 });
+
+function selectRating(rating: number) {
+  emit('ratingSelected', rating);
+}
 </script>
 
 <template>
   <div class="app-rating">
-    <span 
-      v-for="star in stars" 
-      :key="star.index" 
-      class="star"
-      :class="{ 'star--filled': star.filled }"
-    >
+    <span v-for="star in stars" :key="star.index" class="star star--selectable" :class="{
+      'star--filled': star.filled,
+    }" @click="selectRating(star.index)">
       ⭐
     </span>
     <span class="rating-text">{{ normalizedRating }}/{{ maxRating }}</span>
@@ -55,6 +60,14 @@ const stars = computed(() => {
 
 .star--filled {
   filter: grayscale(0%);
+}
+
+.star--selectable {
+  cursor: pointer;
+}
+
+.star--selectable:hover {
+  transform: scale(1.1);
 }
 
 .rating-text {

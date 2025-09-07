@@ -3,6 +3,11 @@ import AppCard from '../atoms/AppCard.vue';
 import AppRating from '../atoms/AppRating.vue';
 import AppButton from '../atoms/AppButton.vue';
 
+import { useJokesStore } from '../../stores/jokes';
+
+const store = useJokesStore();
+const { setJokeRatingById, removeJokeById } = store;
+
 interface Props {
     id?: number;
     type: string;
@@ -16,8 +21,16 @@ const props = withDefaults(defineProps<Props>(), {
     type: 'general',
     setup: 'Where does batman go to the bathroom?',
     punchline: 'The batroom.',
-    rating: 1,
+    rating: 0,
 });
+
+function handleRatingSelected(rating: number) {
+    setJokeRatingById(props.id as number, rating);
+}
+
+function handleRemovingSelected() {
+    removeJokeById(props.id as number);
+}
 
 </script>
 
@@ -28,8 +41,8 @@ const props = withDefaults(defineProps<Props>(), {
                 <p class="joke-card-type code"> 🏷️ {{ props.type }}</p>
                 <p class="joke-card-setup">🙋 {{ props.setup }}</p>
                 <p class="joke-card-punchline">😂 {{ props.punchline }} (Ba dum tss)</p>
-                <AppRating :rating="props.rating" />
-                <AppButton color="red" text="Remove"></AppButton>
+                <AppRating :rating="props.rating" @ratingSelected="handleRatingSelected" />
+                <AppButton color="red" text="Remove" @click="handleRemovingSelected"></AppButton>
             </div>
         </AppCard>
     </div>
