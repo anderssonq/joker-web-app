@@ -1,0 +1,7 @@
+export type SortBy =
+    | "setup-asc"
+    | "setup-desc"
+    | "rating-desc"
+    | "rating-asc"
+    | "type-asc"
+    | "type-desc";

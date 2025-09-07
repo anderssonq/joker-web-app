@@ -28,6 +28,7 @@ How to use unreleased title:
 
 ## [Unreleased]
 ### Added
+- [TEST-7](https://skyagile.atlassian.net/browse/TEST-7) :sparkles: feat(store): add sorting logic, split JokeTypeSelect to AppDropdown
 - [TEST-6](https://skyagile.atlassian.net/browse/TEST-6) :sparkles: feat(pagination): add AppPagination component and enhance jokes filtering
 - [TEST-5](https://skyagile.atlassian.net/browse/TEST-5) feat(components): add JokeCard, AppRating and  AppJokeList components
 - [TEST-4](https://skyagile.atlassian.net/browse/TEST-4) feat(components): enhance AppButton with color variants, new JokeTypeSelect and AppToolBar components

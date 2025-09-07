@@ -1,24 +1,32 @@
 <script setup lang="ts">
 import AppButton from '../atoms/AppButton.vue';
-import { onMounted, ref } from 'vue';
-import { useJokesStore } from '../../stores/jokes';
 
-const store = useJokesStore();
-const { loadJokeTypes, setTypeSelected, getTypeSelected } = store;
+interface Props {
+    title: string;
+    items: string[] | number[];
+    itemSelected: string | number;
+}
 
-const types = ref<string[]>([]);
-
-onMounted(async () => {
-    types.value = await loadJokeTypes();
+const props = withDefaults(defineProps<Props>(), {
+    title: 'Select a joke type',
+    items: () => [],
+    itemSelected: 'general',
 });
 
+const emit = defineEmits<{
+    handleSelect: [type: string]
+}>();
+
+function handleSelect(item: string) {
+    emit('handleSelect', item);
+}
 </script>
 
 <template>
     <div class="dropdown">
-        <AppButton :text="`Joke Type: ${getTypeSelected()}`" color="purple" />
+        <AppButton :text="`${props.title}: ${props.itemSelected}`" color="purple" />
         <div class="dropdown-content">
-            <a v-for="item in types" :key="item" @click="setTypeSelected(item)">{{ item }}</a>
+            <a v-for="item in props.items" :key="item" @click="handleSelect(item)">{{ item }}</a>
         </div>
     </div>
 </template>
@@ -34,6 +42,7 @@ onMounted(async () => {
     background-color: #f9f9f9;
     min-width: 200px;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
 }
 
 .dropdown-content a {
@@ -50,9 +59,5 @@ onMounted(async () => {
 
 .dropdown:hover .dropdown-content {
     display: block;
-}
-
-.dropdown:hover .dropbtn {
-    background-color: #3e8e41;
 }
 </style>

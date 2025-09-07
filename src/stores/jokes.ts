@@ -2,6 +2,7 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 import { getJokeTypes, getJokesAll } from "@/services/jokeService";
 import type { Joke } from "@/interfaces/joke.interface";
+import type { SortBy } from "@/types";
 
 export const useJokesStore = defineStore("jokes", () => {
   const jokes = ref<Joke[]>([]);
@@ -13,7 +14,17 @@ export const useJokesStore = defineStore("jokes", () => {
   const error = ref<string | null>(null);
 
   const currentPage = ref(1);
-  const perPage = ref(5);
+  const perPage = ref(10);
+
+  const sortTypes: SortBy[] = [
+    "setup-asc",
+    "setup-desc",
+    "rating-desc",
+    "rating-asc",
+    "type-asc",
+    "type-desc",
+  ];
+  const sortBy = ref<SortBy>("setup-asc");
 
   async function loadJokeTypes(): Promise<string[]> {
     setLoading(true);
@@ -51,12 +62,38 @@ export const useJokesStore = defineStore("jokes", () => {
 
   function paginatedJokes(): Joke[] {
     const start = (currentPage.value - 1) * perPage.value;
-    let filteredJokes = getJokes();
+    let filteredJokes = [...getJokes()]; // Create a copy to avoid mutating original
     
     // Filter by type if a specific type is selected
     if (typeSelected.value && typeSelected.value !== 'general') {
       filteredJokes = filteredJokes.filter(joke => joke.type === typeSelected.value);
     }
+    
+    // Sort jokes based on sortBy value
+    filteredJokes.sort((a, b) => {
+      switch (sortBy.value) {
+        case "setup-asc":
+          return a.setup.localeCompare(b.setup);
+        case "setup-desc":
+          return b.setup.localeCompare(a.setup);
+        case "rating-desc": {
+          const ra = a.rating ?? 0;
+          const rb = b.rating ?? 0;
+          return rb - ra;
+        }
+        case "rating-asc": {
+          const ra = a.rating ?? 0;
+          const rb = b.rating ?? 0;
+          return ra - rb;
+        }
+        case "type-asc":
+          return a.type.localeCompare(b.type) || a.setup.localeCompare(b.setup);
+        case "type-desc":
+          return b.type.localeCompare(a.type) || a.setup.localeCompare(b.setup);
+        default:
+          return 0;
+      }
+    });
     
     return filteredJokes.slice(start, start + perPage.value);
   }
@@ -64,7 +101,6 @@ export const useJokesStore = defineStore("jokes", () => {
   function getTotalPages(): number {
     let filteredJokes = jokes.value;
     
-    // Filter by type if a specific type is selected
     if (typeSelected.value && typeSelected.value !== 'general') {
       filteredJokes = filteredJokes.filter(joke => joke.type === typeSelected.value);
     }
@@ -72,12 +108,34 @@ export const useJokesStore = defineStore("jokes", () => {
     return Math.ceil(filteredJokes.length / perPage.value);
   }
 
+   function setSortBy(value: SortBy) {
+    sortBy.value = value;
+    setCurrentPage(1);
+  }
+
+  function getSortBy(): SortBy {
+    return sortBy.value;
+  }
+  
+  function getSortTypes(): SortBy[] {
+    return sortTypes;
+  }
+  
   function setJokes(_jokes: Joke[]) {
     jokes.value = _jokes;
   }
 
   function getJokes(): Joke[] {
     return jokes.value;
+  }
+
+  function setPerPage(page: number): void {
+    setCurrentPage(1);
+    perPage.value = page;
+  }
+
+  function getPerPage(): number {
+    return perPage.value;
   }
 
   function setCurrentPage(page: number): void {
@@ -98,6 +156,7 @@ export const useJokesStore = defineStore("jokes", () => {
 
   function setTypeSelected(_type: string) {
     typeSelected.value = _type;
+    setCurrentPage(1);
   }
 
   function getTypeSelected(): string {
@@ -136,6 +195,13 @@ export const useJokesStore = defineStore("jokes", () => {
     getCurrentPage,
     paginatedJokes,
     getTotalPages,
+    setPerPage,
+    getPerPage,
+
+    // Sorting
+    setSortBy,
+    getSortBy,
+    getSortTypes,
 
     // Loading & Error
     setLoading,
