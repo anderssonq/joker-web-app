@@ -6,9 +6,9 @@ import AppButton from '../atoms/AppButton.vue';
 import AppTextField from '../atoms/AppTextField.vue';
 import AppDropdown from '../molecules/AppDropdown.vue';
 
-
 import { useJokesStore } from '../../stores/jokes';
 import type { ModeForm } from '@/types';
+import { confirmModal } from '@/utils';
 
 const store = useJokesStore();
 const { setModeForm, getTypes, addJoke } = store;
@@ -27,11 +27,17 @@ const jokeForm = ref({
     punchline: '',
 });
 
+const isValidForm = () => {
+    return jokeForm.value.type !== '' && jokeForm.value.setup.trim() !== '' && jokeForm.value.punchline.trim() !== '';
+};
+
 const handleSelectType = (type: string) => {
     jokeForm.value.type = type;
 };
 
 const handleActionBtn = () => {
+    const confirm = confirmModal('Are you sure you want to save this joke? 🥸');
+    if (!confirm) return;
     if (props.mode === 'create') {
         addJoke(jokeForm.value);
     }
@@ -65,7 +71,7 @@ const handleActionBtn = () => {
             </div>
 
             <div class="form-actions">
-                <AppButton color="green" text="Save Joke" @click="handleActionBtn" />
+                <AppButton color="green" text="Save Joke" @click="handleActionBtn" :disabled="!isValidForm()" />
                 <AppButton color="red" text="Cancel" @click="setModeForm('none')" />
             </div>
         </div>

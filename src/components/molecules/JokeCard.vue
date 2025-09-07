@@ -4,6 +4,7 @@ import AppRating from '../atoms/AppRating.vue';
 import AppButton from '../atoms/AppButton.vue';
 
 import { useJokesStore } from '../../stores/jokes';
+import { confirmModal } from '@/utils';
 
 const store = useJokesStore();
 const { setJokeRatingById, removeJokeById } = store;
@@ -31,6 +32,8 @@ function handleRatingSelected(rating: number) {
 }
 
 function handleRemovingSelected() {
+   const confirm = confirmModal('Are you sure you want to remove this joke? 🗑️');
+    if (!confirm) return;
     removeJokeById(props.id as number);
 }
 

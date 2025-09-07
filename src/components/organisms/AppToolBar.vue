@@ -6,10 +6,11 @@ import { useJokesStore } from '../../stores/jokes';
 import AppDropdown from '../molecules/AppDropdown.vue';
 import AppButton from '../atoms/AppButton.vue';
 import AppPagination from '@/components/molecules/AppPagination.vue';
+import AppSkeleton from '@/components/atoms/AppSkeleton.vue';
 import type { SortBy } from '@/types';
 
 const store = useJokesStore();
-const { loadJokeTypes, setTypeSelected, getTypeSelected, setSortBy, getSortBy, getSortTypes, setPerPage, getPerPage, setModeForm, getModeForm } = store;
+const { loadJokeTypes, setTypeSelected, getTypeSelected, setSortBy, getSortBy, getSortTypes, setPerPage, getPerPage, setModeForm, getModeForm, getLoading } = store;
 
 const types = ref<string[]>([]);
 onMounted(async () => {
@@ -37,10 +38,17 @@ const handleSelectPerPage = (perPage: number) => {
                 <h3>Menu</h3>
             </div>
             <div class="tool-bar-content">
-                <AppDropdown title="Select a joke type" :items="types" :itemSelected="getTypeSelected()" @handleSelect="handleSelectType" />
-                <AppDropdown title="Order jokes by" :items="getSortTypes()" :itemSelected="getSortBy()" @handleSelect="handleSelectSort" />
-                <AppDropdown title="Number of jokes per page" :items="[2, 5, 10]" :itemSelected="getPerPage()" @handleSelect="handleSelectPerPage" />
-                <AppButton v-if="getModeForm() !== 'create'" :text="`Add a new Joke 😜`" @click="setModeForm('create')" />
+                <div>
+                    <AppSkeleton v-if="getLoading()" />
+                    <AppDropdown title="Select a joke type" :items="types" :itemSelected="getTypeSelected()"
+                        @handleSelect="handleSelectType" />
+                </div>
+                <AppDropdown title="Order jokes by" :items="getSortTypes()" :itemSelected="getSortBy()"
+                    @handleSelect="handleSelectSort" />
+                <AppDropdown title="Number of jokes per page" :items="[2, 5, 10]" :itemSelected="getPerPage()"
+                    @handleSelect="handleSelectPerPage" />
+                <AppButton :text="`Add a new Joke 😜`" @click="setModeForm('create')"
+                    :disabled="getModeForm() === 'create'" />
             </div>
             <div class="tool-bar-footer">
                 <AppPagination :maxVisiblePages="5" />

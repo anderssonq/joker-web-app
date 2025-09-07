@@ -3,6 +3,8 @@ import { defineStore } from "pinia";
 import { getJokeTypes, getJokesAll } from "@/services/jokeService";
 import type { Joke } from "@/interfaces/joke.interface";
 import type { ModeForm, SortBy } from "@/types";
+import { loadJokesFromLocalStorage, loadTypesFromLocalStorage, saveToLocalStorage } from "@/utils";
+import { JOKES_CACHE_KEY, TYPES_CACHE_KEY } from "@/const";
 
 export const useJokesStore = defineStore("jokes", () => {
   const jokes = ref<Joke[]>([]);
@@ -29,11 +31,21 @@ export const useJokesStore = defineStore("jokes", () => {
   const sortBy = ref<SortBy>("setup-asc");
 
   async function loadJokeTypes(): Promise<string[]> {
+    const cachedTypes = loadTypesFromLocalStorage(TYPES_CACHE_KEY);
+
+    if (cachedTypes) {
+      setTypes(cachedTypes);
+      return cachedTypes;
+    }
+
     setLoading(true);
     setError(null);
     try {
       const _types = await getJokeTypes();
       setTypes(_types);
+
+      saveToLocalStorage(TYPES_CACHE_KEY, _types);
+
       return _types;
     } catch (error: Error | unknown) {
       const _error = (error as Error).message || "Error fetching joke types";
@@ -46,11 +58,19 @@ export const useJokesStore = defineStore("jokes", () => {
   }
 
   async function loadJokes(): Promise<Joke[]> {
+    const cachedJokes = loadJokesFromLocalStorage(JOKES_CACHE_KEY);
+    if (cachedJokes) {
+      setJokes(cachedJokes);
+      return cachedJokes;
+    }
+
     setLoading(true);
     setError(null);
     try {
       const _jokes = await getJokesAll();
       setJokes(_jokes);
+      saveToLocalStorage(JOKES_CACHE_KEY, _jokes);
+
       return _jokes;
     } catch (error: Error | unknown) {
       const _error = (error as Error).message || "Error fetching jokes";
@@ -67,13 +87,16 @@ export const useJokesStore = defineStore("jokes", () => {
     const joke = _jokes.find((joke) => joke.id === id);
     if (joke) {
       joke.rating = rating;
+      setJokes(_jokes);
+      saveToLocalStorage(JOKES_CACHE_KEY, _jokes);
     }
   }
 
   function addJoke(joke: Joke) {
     const _jokes = getJokes();
-    _jokes.unshift({...joke, id: Date.now(), byUser: true});
+    _jokes.unshift({ ...joke, id: Date.now(), byUser: true });
     setJokes(_jokes);
+    saveToLocalStorage(JOKES_CACHE_KEY, _jokes);
   }
 
   function removeJokeById(id: number) {
@@ -82,12 +105,13 @@ export const useJokesStore = defineStore("jokes", () => {
     if (jokeIndex !== -1) {
       _jokes.splice(jokeIndex, 1);
       setJokes(_jokes);
+      saveToLocalStorage(JOKES_CACHE_KEY, _jokes);
     }
   }
 
   function paginatedJokes(): Joke[] {
     const start = (currentPage.value - 1) * perPage.value;
-    let filteredJokes = [...getJokes()]; // Create a copy to avoid mutating original
+    let filteredJokes = [...getJokes()];
 
     // Filter by type if a specific type is selected
     if (typeSelected.value && typeSelected.value !== "general") {
@@ -118,7 +142,7 @@ export const useJokesStore = defineStore("jokes", () => {
         case "type-desc":
           return b.type.localeCompare(a.type) || a.setup.localeCompare(b.setup);
         case "by-user":
-          return (b.byUser === a.byUser ? 0 : b.byUser ? 1 : -1);
+          return b.byUser === a.byUser ? 0 : b.byUser ? 1 : -1;
         default:
           return 0;
       }
@@ -229,6 +253,8 @@ export const useJokesStore = defineStore("jokes", () => {
     addJoke,
     setJokeRatingById,
     removeJokeById,
+
+    // jokes form mode
     setModeForm,
     getModeForm,
 

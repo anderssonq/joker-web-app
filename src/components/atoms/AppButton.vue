@@ -2,11 +2,13 @@
 interface Props {
     text?: string;
     color?: 'purple' | 'green' | 'red';
+    disabled?: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
     text: 'Press me',
-    color: 'purple'
+    color: 'purple',
+    disabled: false
 });
 
 const emit = defineEmits<{
@@ -14,12 +16,22 @@ const emit = defineEmits<{
 }>();
 
 function handleClick() {
-    emit('click');
+    if (!props.disabled) {
+        emit('click');
+    }
 }
 </script>
 
 <template>
-    <button class="app-button" :class="`app-button--${props.color}`" @click="handleClick">
+    <button 
+        class="app-button" 
+        :class="[
+            `app-button--${props.color}`,
+            { 'app-button--disabled': props.disabled }
+        ]"
+        :disabled="props.disabled"
+        @click="handleClick"
+    >
         {{ props.text }}
     </button>
 </template>
@@ -37,6 +49,17 @@ function handleClick() {
     color: white;
     padding: 0 10px;
     transition: background-color 0.2s;
+}
+
+.app-button--disabled {
+    background-color: #9ca3af !important;
+    cursor: not-allowed !important;
+    opacity: 0.6;
+}
+
+.app-button--disabled:hover,
+.app-button--disabled:active {
+    background-color: #9ca3af !important;
 }
 
 .app-button--purple {

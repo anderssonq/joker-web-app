@@ -1,17 +1,19 @@
 <script setup lang="ts">
+import AppSkeleton from '../atoms/AppSkeleton.vue';
 import JokeCard from '../molecules/JokeCard.vue';
 import AppCard from '../atoms/AppCard.vue';
 
 import { useJokesStore } from '../../stores/jokes';
 
 const store = useJokesStore();
-const { paginatedJokes } = store;
+const { paginatedJokes, getLoading } = store;
 // TODO: Add loading and error handling
 
 </script>
 
 <template>
     <div class="app-joke-list">
+        <AppSkeleton v-if="getLoading()" />
         <JokeCard v-for="joke in paginatedJokes()" :key="joke.id" :id="joke.id" :type="joke.type" :setup="joke.setup"
             :punchline="joke.punchline" :rating="joke.rating" :byUser="joke.byUser" />
 
