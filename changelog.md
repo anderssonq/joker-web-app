@@ -28,6 +28,7 @@ How to use unreleased title:
 
 ## [Unreleased]
 ### Added
+- [TEST-9](https://skyagile.atlassian.net/browse/TEST-9) :sparkles: feat(input, add joke logic): add AppTextField component with v-model support, New Form Mode component, new add Joke logic feature, new footer component
 - [TEST-8](https://skyagile.atlassian.net/browse/TEST-8) :sparkles: feat(rating, remove jokes): enhance AppRating component with selectable functionality and Remove Joke feature
 - [TEST-7](https://skyagile.atlassian.net/browse/TEST-7) :sparkles: feat(store): add sorting logic, split JokeTypeSelect to AppDropdown
 - [TEST-6](https://skyagile.atlassian.net/browse/TEST-6) :sparkles: feat(pagination): add AppPagination component and enhance jokes filtering

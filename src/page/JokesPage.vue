@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import AppHeader from '@/components/organisms/AppHeader.vue';
+import AppHeader from '@/components/atoms/AppHeader.vue';
 import AppJokeList from '@/components/organisms/AppJokeList.vue';
 import AppToolBar from '@/components/organisms/AppToolBar.vue';
+import AppFormJoke from '@/components/organisms/AppFormJoke.vue';
+import AppFooter from '@/components/atoms/AppFooter.vue';
 
 import { useJokesStore } from '../stores/jokes';
 import { onMounted } from 'vue';
 
 const store = useJokesStore();
-const { loadJokes } = store;
+const { loadJokes, getModeForm } = store;
 
 onMounted(async () => {
     await loadJokes();
@@ -15,31 +17,17 @@ onMounted(async () => {
 </script>
 
 <template>
-    <header>
-        <AppHeader />
-    </header>
+    <AppHeader />
     <main class="app-main">
         <AppToolBar />
-        <AppJokeList />
+        <AppJokeList v-if="getModeForm() === 'none'" />
+        <AppFormJoke v-if="getModeForm() !== 'none'" :mode="getModeForm()" />
     </main>
-    <footer class="app-footer">
-        <a href="https://andersoftware.com/" target="_blank" rel="noopener noreferrer">Ander was here</a>. {{ new Date().getFullYear() }}
-    </footer>
+    <AppFooter />
 </template>
 
 <style scoped>
 .app-main {
     padding: 1rem;
-}
-
-.app-footer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 60px;
-    font-size: 1rem;
-    background: #fff;
-    color: #222;
-    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
 }
 </style>

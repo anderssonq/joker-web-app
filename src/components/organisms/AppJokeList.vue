@@ -13,7 +13,7 @@ const { paginatedJokes } = store;
 <template>
     <div class="app-joke-list">
         <JokeCard v-for="joke in paginatedJokes()" :key="joke.id" :id="joke.id" :type="joke.type" :setup="joke.setup"
-            :punchline="joke.punchline" :rating="joke.rating" />
+            :punchline="joke.punchline" :rating="joke.rating" :byUser="joke.byUser" />
 
         <AppCard v-if="paginatedJokes().length === 0">
             <div class="joke-card-content">

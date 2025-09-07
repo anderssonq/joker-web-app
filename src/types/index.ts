@@ -4,4 +4,9 @@ export type SortBy =
     | "rating-desc"
     | "rating-asc"
     | "type-asc"
-    | "type-desc";
+    | "type-desc"
+    | "by-user";
+
+export type ModeForm =
+    | "create"
+    | "none"

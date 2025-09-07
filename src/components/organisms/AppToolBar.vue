@@ -9,7 +9,7 @@ import AppPagination from '@/components/molecules/AppPagination.vue';
 import type { SortBy } from '@/types';
 
 const store = useJokesStore();
-const { loadJokeTypes, setTypeSelected, getTypeSelected, setSortBy, getSortBy, getSortTypes, setPerPage, getPerPage } = store;
+const { loadJokeTypes, setTypeSelected, getTypeSelected, setSortBy, getSortBy, getSortTypes, setPerPage, getPerPage, setModeForm, getModeForm } = store;
 
 const types = ref<string[]>([]);
 onMounted(async () => {
@@ -40,7 +40,7 @@ const handleSelectPerPage = (perPage: number) => {
                 <AppDropdown title="Select a joke type" :items="types" :itemSelected="getTypeSelected()" @handleSelect="handleSelectType" />
                 <AppDropdown title="Order jokes by" :items="getSortTypes()" :itemSelected="getSortBy()" @handleSelect="handleSelectSort" />
                 <AppDropdown title="Number of jokes per page" :items="[2, 5, 10]" :itemSelected="getPerPage()" @handleSelect="handleSelectPerPage" />
-                <AppButton text="Add a new Joke 😜" />
+                <AppButton v-if="getModeForm() !== 'create'" :text="`Add a new Joke 😜`" @click="setModeForm('create')" />
             </div>
             <div class="tool-bar-footer">
                 <AppPagination :maxVisiblePages="5" />

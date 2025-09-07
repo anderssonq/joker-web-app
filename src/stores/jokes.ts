@@ -2,10 +2,11 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 import { getJokeTypes, getJokesAll } from "@/services/jokeService";
 import type { Joke } from "@/interfaces/joke.interface";
-import type { SortBy } from "@/types";
+import type { ModeForm, SortBy } from "@/types";
 
 export const useJokesStore = defineStore("jokes", () => {
   const jokes = ref<Joke[]>([]);
+  const formMode = ref<ModeForm>("none");
 
   const types = ref<string[]>([]);
   const typeSelected = ref<string>("general");
@@ -23,6 +24,7 @@ export const useJokesStore = defineStore("jokes", () => {
     "rating-asc",
     "type-asc",
     "type-desc",
+    "by-user",
   ];
   const sortBy = ref<SortBy>("setup-asc");
 
@@ -62,15 +64,21 @@ export const useJokesStore = defineStore("jokes", () => {
 
   function setJokeRatingById(id: number, rating: number) {
     const _jokes = getJokes();
-    const joke = _jokes.find(joke => joke.id === id);
+    const joke = _jokes.find((joke) => joke.id === id);
     if (joke) {
       joke.rating = rating;
     }
   }
 
+  function addJoke(joke: Joke) {
+    const _jokes = getJokes();
+    _jokes.unshift({...joke, id: Date.now(), byUser: true});
+    setJokes(_jokes);
+  }
+
   function removeJokeById(id: number) {
     const _jokes = getJokes();
-    const jokeIndex = _jokes.findIndex(joke => joke.id === id);
+    const jokeIndex = _jokes.findIndex((joke) => joke.id === id);
     if (jokeIndex !== -1) {
       _jokes.splice(jokeIndex, 1);
       setJokes(_jokes);
@@ -80,12 +88,14 @@ export const useJokesStore = defineStore("jokes", () => {
   function paginatedJokes(): Joke[] {
     const start = (currentPage.value - 1) * perPage.value;
     let filteredJokes = [...getJokes()]; // Create a copy to avoid mutating original
-    
+
     // Filter by type if a specific type is selected
-    if (typeSelected.value && typeSelected.value !== 'general') {
-      filteredJokes = filteredJokes.filter(joke => joke.type === typeSelected.value);
+    if (typeSelected.value && typeSelected.value !== "general") {
+      filteredJokes = filteredJokes.filter(
+        (joke) => joke.type === typeSelected.value
+      );
     }
-    
+
     // Sort jokes based on sortBy value
     filteredJokes.sort((a, b) => {
       switch (sortBy.value) {
@@ -107,25 +117,29 @@ export const useJokesStore = defineStore("jokes", () => {
           return a.type.localeCompare(b.type) || a.setup.localeCompare(b.setup);
         case "type-desc":
           return b.type.localeCompare(a.type) || a.setup.localeCompare(b.setup);
+        case "by-user":
+          return (b.byUser === a.byUser ? 0 : b.byUser ? 1 : -1);
         default:
           return 0;
       }
     });
-    
+
     return filteredJokes.slice(start, start + perPage.value);
   }
 
   function getTotalPages(): number {
     let filteredJokes = jokes.value;
-    
-    if (typeSelected.value && typeSelected.value !== 'general') {
-      filteredJokes = filteredJokes.filter(joke => joke.type === typeSelected.value);
+
+    if (typeSelected.value && typeSelected.value !== "general") {
+      filteredJokes = filteredJokes.filter(
+        (joke) => joke.type === typeSelected.value
+      );
     }
-    
+
     return Math.ceil(filteredJokes.length / perPage.value);
   }
 
-   function setSortBy(value: SortBy) {
+  function setSortBy(value: SortBy) {
     sortBy.value = value;
     setCurrentPage(1);
   }
@@ -133,17 +147,25 @@ export const useJokesStore = defineStore("jokes", () => {
   function getSortBy(): SortBy {
     return sortBy.value;
   }
-  
+
   function getSortTypes(): SortBy[] {
     return sortTypes;
   }
-  
+
   function setJokes(_jokes: Joke[]) {
     jokes.value = _jokes;
   }
 
   function getJokes(): Joke[] {
     return jokes.value;
+  }
+
+  function setModeForm(_mode: ModeForm) {
+    formMode.value = _mode;
+  }
+
+  function getModeForm(): ModeForm {
+    return formMode.value;
   }
 
   function setPerPage(page: number): void {
@@ -204,8 +226,11 @@ export const useJokesStore = defineStore("jokes", () => {
     getTypeSelected,
 
     // jokes mutation
+    addJoke,
     setJokeRatingById,
     removeJokeById,
+    setModeForm,
+    getModeForm,
 
     // Jokes items
     loadJokes,

@@ -4,4 +4,5 @@ export interface Joke {
   setup: string;
   punchline: string;
   rating?: number;
+  byUser?: boolean;
 }
