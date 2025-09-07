@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import AppHeader from '@/components/atoms/AppHeader.vue';
-import AppJokeList from '@/components/organisms/AppJokeList.vue';
-import AppToolBar from '@/components/organisms/AppToolBar.vue';
-import AppFormJoke from '@/components/organisms/AppFormJoke.vue';
-import AppFooter from '@/components/atoms/AppFooter.vue';
+import { defineAsyncComponent } from 'vue';
+
+const AppHeader = defineAsyncComponent(() => import('@/components/atoms/AppHeader.vue'));
+const AppJokeList = defineAsyncComponent(() => import('@/components/organisms/AppJokeList.vue'));
+const AppToolBar = defineAsyncComponent(() => import('@/components/organisms/AppToolBar.vue'));
+const AppFormJoke = defineAsyncComponent(() => import('@/components/organisms/AppFormJoke.vue'));
+const AppFooter = defineAsyncComponent(() => import('@/components/atoms/AppFooter.vue'));
 
 import { useJokesStore } from '../stores/jokes';
 import { onMounted } from 'vue';

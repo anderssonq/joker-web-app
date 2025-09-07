@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import AppSkeleton from '../atoms/AppSkeleton.vue';
-import JokeCard from '../molecules/JokeCard.vue';
-import AppCard from '../atoms/AppCard.vue';
+import { defineAsyncComponent } from 'vue';
+
+const AppSkeleton = defineAsyncComponent(() => import('@/components/atoms/AppSkeleton.vue'));
+const JokeCard = defineAsyncComponent(() => import('@/components/molecules/JokeCard.vue'));
+const AppCard = defineAsyncComponent(() => import('@/components/atoms/AppCard.vue'));
 
 import { useJokesStore } from '../../stores/jokes';
 

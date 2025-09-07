@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import AppButton from '../atoms/AppButton.vue';
+import { defineAsyncComponent } from 'vue'
+const AppButton = defineAsyncComponent(() => import('@/components/atoms/AppButton.vue'))
 
 interface Props {
     title: string;

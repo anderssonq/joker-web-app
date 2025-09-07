@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import AppButton from '@/components/atoms/AppButton.vue'
+import { defineAsyncComponent } from 'vue';
+const AppButton = defineAsyncComponent(() => import('@/components/atoms/AppButton.vue'));
+
 import { computed } from 'vue';
 
 import { useJokesStore } from '../../stores/jokes';

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, defineAsyncComponent } from 'vue';
 
-import AppCard from '../atoms/AppCard.vue';
-import AppButton from '../atoms/AppButton.vue';
-import AppTextField from '../atoms/AppTextField.vue';
-import AppDropdown from '../molecules/AppDropdown.vue';
+const AppCard = defineAsyncComponent(() => import('@/components/atoms/AppCard.vue'));
+const AppButton = defineAsyncComponent(() => import('@/components/atoms/AppButton.vue'));
+const AppTextField = defineAsyncComponent(() => import('@/components/atoms/AppTextField.vue'));
+const AppDropdown = defineAsyncComponent(() => import('@/components/molecules/AppDropdown.vue'));
 
 import { useJokesStore } from '../../stores/jokes';
 import type { ModeForm } from '@/types';

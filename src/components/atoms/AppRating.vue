@@ -67,8 +67,7 @@ function selectRating(rating: number) {
 }
 
 .star--selectable:hover {
-  transform: scale(1.1);
-}
+  transform: scale(1.1);}
 
 .rating-text {
   margin-left: 8px;

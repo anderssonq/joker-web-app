@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
+import { defineAsyncComponent } from 'vue';
 
-import AppCard from '../atoms/AppCard.vue';
+const AppCard = defineAsyncComponent(() => import('@/components/atoms/AppCard.vue'));
+const AppDropdown = defineAsyncComponent(() => import('@/components/molecules/AppDropdown.vue'));
+const AppButton = defineAsyncComponent(() => import('@/components/atoms/AppButton.vue'));
+const AppPagination = defineAsyncComponent(() => import('@/components/molecules/AppPagination.vue'));
+const AppSkeleton = defineAsyncComponent(() => import('@/components/atoms/AppSkeleton.vue'));
+
 import { useJokesStore } from '../../stores/jokes';
-import AppDropdown from '../molecules/AppDropdown.vue';
-import AppButton from '../atoms/AppButton.vue';
-import AppPagination from '@/components/molecules/AppPagination.vue';
-import AppSkeleton from '@/components/atoms/AppSkeleton.vue';
 import type { SortBy } from '@/types';
 
 const store = useJokesStore();

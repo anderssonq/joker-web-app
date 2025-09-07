@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import AppCard from '../atoms/AppCard.vue';
-import AppRating from '../atoms/AppRating.vue';
-import AppButton from '../atoms/AppButton.vue';
+import { defineAsyncComponent } from 'vue'
+const AppButton = defineAsyncComponent(() => import('@/components/atoms/AppButton.vue'))
+const AppCard = defineAsyncComponent(() => import('@/components/atoms/AppCard.vue'))
+const AppRating = defineAsyncComponent(() => import('@/components/atoms/AppRating.vue'))
 
 import { useJokesStore } from '../../stores/jokes';
 import { confirmModal } from '@/utils';
