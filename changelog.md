@@ -28,6 +28,7 @@ How to use unreleased title:
 
 ## [Unreleased]
 ### Added
+- [TEST-12](https://skyagile.atlassian.net/browse/TEST-12) :white_check_mark: test(components): add App async JokesPage loading spec and created some unit test on molecules components
 - [TEST-11](https://skyagile.atlassian.net/browse/TEST-11) :white_check_mark: test(components): add comprehensive unit tests for atomic atoms components
 - [TEST-10](https://skyagile.atlassian.net/browse/TEST-10) :sparkles: feat(cache, types, Skeleton, Btn): implement localStorage caching system, Btn disabled upgraded and Skeleton component
 - [TEST-9](https://skyagile.atlassian.net/browse/TEST-9) :sparkles: feat(input, add joke logic): add AppTextField component with v-model support, New Form Mode component, new add Joke logic feature, new footer component

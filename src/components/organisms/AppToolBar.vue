@@ -27,8 +27,8 @@ const handleSelectSort = (sort: string) => {
     setSortBy(sort as SortBy);
 };
 
-const handleSelectPerPage = (perPage: number) => {
-    setPerPage(perPage);
+const handleSelectPerPage = (perPage: string) => {
+    setPerPage(Number(perPage));
 };
 
 </script>
@@ -41,8 +41,8 @@ const handleSelectPerPage = (perPage: number) => {
             </div>
             <div class="tool-bar-content">
                 <div>
-                    <AppSkeleton v-if="getLoading()" />
-                    <AppDropdown title="Select a joke type" :items="types" :itemSelected="getTypeSelected()"
+                    <AppSkeleton v-if="getLoading() || !getTypeSelected()" />
+                    <AppDropdown v-if="!getLoading() && getTypeSelected()" title="Select a joke type" :items="types" :itemSelected="getTypeSelected()"
                         @handleSelect="handleSelectType" />
                 </div>
                 <AppDropdown title="Order jokes by" :items="getSortTypes()" :itemSelected="getSortBy()"

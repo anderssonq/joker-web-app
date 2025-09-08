@@ -25,9 +25,9 @@ function handleSelect(item: string) {
 
 <template>
     <div class="dropdown">
-        <AppButton :text="`${props.title}: ${props.itemSelected}`" color="purple" />
+        <AppButton :text="`${props.title}: ${props.itemSelected || 'Select an item'}`" color="purple" />
         <div class="dropdown-content">
-            <a v-for="item in props.items" :key="item" @click="handleSelect(item)">{{ item }}</a>
+            <a v-for="item in props.items" :key="item" @click="handleSelect(String(item))">{{ item }}</a>
         </div>
     </div>
 </template>

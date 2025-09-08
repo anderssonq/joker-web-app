@@ -38,7 +38,7 @@ const handleSelectType = (type: string) => {
 const handleActionBtn = () => {
     const confirm = confirmModal('Are you sure you want to save this joke? 🥸');
     if (!confirm) return;
-    if (props.mode === 'create') {
+    if (props.mode === 'create' && isValidForm()) {
         addJoke(jokeForm.value);
     }
     setModeForm('none');

@@ -11,7 +11,7 @@ export const useJokesStore = defineStore("jokes", () => {
   const formMode = ref<ModeForm>("none");
 
   const types = ref<string[]>([]);
-  const typeSelected = ref<string>("general");
+  const typeSelected = ref<string>('');
 
   const loading = ref(false);
   const error = ref<string | null>(null);
@@ -35,6 +35,7 @@ export const useJokesStore = defineStore("jokes", () => {
 
     if (cachedTypes) {
       setTypes(cachedTypes);
+      setTypeSelected(cachedTypes[0]);
       return cachedTypes;
     }
 
@@ -43,6 +44,7 @@ export const useJokesStore = defineStore("jokes", () => {
     try {
       const _types = await getJokeTypes();
       setTypes(_types);
+      setTypeSelected(_types[0]);
 
       saveToLocalStorage(TYPES_CACHE_KEY, _types);
 
@@ -120,6 +122,10 @@ export const useJokesStore = defineStore("jokes", () => {
       );
     }
 
+    if (sortBy.value === 'by-user') {
+      filteredJokes = filteredJokes.filter(j => j.byUser);
+      if (filteredJokes.length === 0) return [];
+    }
     // Sort jokes based on sortBy value
     filteredJokes.sort((a, b) => {
       switch (sortBy.value) {
@@ -142,7 +148,7 @@ export const useJokesStore = defineStore("jokes", () => {
         case "type-desc":
           return b.type.localeCompare(a.type) || a.setup.localeCompare(b.setup);
         case "by-user":
-          return b.byUser === a.byUser ? 0 : b.byUser ? 1 : -1;
+          return 0;
         default:
           return 0;
       }
@@ -151,16 +157,21 @@ export const useJokesStore = defineStore("jokes", () => {
     return filteredJokes.slice(start, start + perPage.value);
   }
 
-  function getTotalPages(): number {
-    let filteredJokes = jokes.value;
+function getTotalPages(): number {
+    // Start from all jokes
+    let filteredJokes = getJokes();
 
+    // Apply type filter (same logic as in paginatedJokes)
     if (typeSelected.value && typeSelected.value !== "general") {
-      filteredJokes = filteredJokes.filter(
-        (joke) => joke.type === typeSelected.value
-      );
+      filteredJokes = filteredJokes.filter(joke => joke.type === typeSelected.value);
     }
 
-    return Math.ceil(filteredJokes.length / perPage.value);
+    // Apply "by-user" filter when active (must mirror paginatedJokes)
+    if (sortBy.value === 'by-user') {
+      filteredJokes = filteredJokes.filter(j => j.byUser);
+    }
+
+    return Math.ceil(filteredJokes.length / perPage.value) || 1;
   }
 
   function setSortBy(value: SortBy) {
