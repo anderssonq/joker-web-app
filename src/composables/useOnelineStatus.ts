@@ -1,5 +1,5 @@
 import { ref, onMounted, onUnmounted } from "vue";
-
+// INFO: closure usage -> functions below capture outer scope variables.
 export function useOnlineStatus() {
   const isOnline = ref(navigator.onLine);
 

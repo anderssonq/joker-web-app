@@ -49,6 +49,8 @@ function handleClick() {
     color: white;
     padding: 0 10px;
     transition: background-color 0.2s;
+    width: 100%;
+    justify-content: center;
 }
 
 .app-button--disabled {

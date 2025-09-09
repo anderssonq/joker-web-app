@@ -1,13 +1,9 @@
-import { ref, computed, watch, type ComputedRef } from "vue";
-
-/**
- * Pass a function that returns the current (reactive) list each access.
- */
+import { ref, computed, watch } from "vue";
+// INFO: closure usage -> functions below capture outer scope variables.
 export function usePagination<T>(source: () => T[]) {
   const currentPage = ref(1);
   const perPage = ref(5);
 
-  // Reactive bridge to the provided source
   const items = computed<T[]>(() => source());
 
   const totalPages = computed(() =>
@@ -16,7 +12,6 @@ export function usePagination<T>(source: () => T[]) {
 
   const paginatedItems = computed(() => {
     const start = (currentPage.value - 1) * perPage.value;
-    console.log('Paginating items from', items.value.length);
     return items.value.slice(start, start + perPage.value);
   });
 
@@ -31,7 +26,6 @@ export function usePagination<T>(source: () => T[]) {
     setPage(1);
   }
 
-  // If data shrinks so current page is out of range, correct it
   watch([items, perPage], () => {
     if (
       (currentPage.value - 1) * perPage.value >= items.value.length &&

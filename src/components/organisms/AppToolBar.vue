@@ -37,13 +37,13 @@ const handleSelectPerPage = (perPage: string) => {
     <div class="app-tool-bar">
         <AppCard>
             <div class="tool-bar-header">
-                <h3>Menu</h3>
+                <h3>Menu 🤓☝️</h3>
             </div>
             <div class="tool-bar-content">
                 <div>
                     <AppSkeleton v-if="getLoading() || !getTypeSelected()" />
-                    <AppDropdown v-if="!getLoading() && getTypeSelected()" title="Select a joke type" :items="types" :itemSelected="getTypeSelected()"
-                        @handleSelect="handleSelectType" />
+                    <AppDropdown v-if="!getLoading() && getTypeSelected()" title="Select a joke type" :items="types"
+                        :itemSelected="getTypeSelected()" @handleSelect="handleSelectType" />
                 </div>
                 <AppDropdown title="Order jokes by" :items="getSortTypes()" :itemSelected="getSortBy()"
                     @handleSelect="handleSelectSort" />
@@ -60,11 +60,27 @@ const handleSelectPerPage = (perPage: string) => {
 </template>
 
 <style scoped>
+.tool-bar-header {
+    width: 100%;
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
 .tool-bar-content {
     width: 100%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: stretch;
+    justify-content: center;
+}
+
+.tool-bar-content>* {
+    flex: 1 1 180px;
+    min-width: 160px;
+    max-width: 240px;
 }
 
 .tool-bar-footer {

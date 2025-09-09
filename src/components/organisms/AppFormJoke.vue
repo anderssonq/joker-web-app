@@ -68,7 +68,7 @@ const handleActionBtn = () => {
 <template>
     <AppCard>
         <div class="joke-form">
-            <h3>Add a new Joke</h3>
+            <h3>{{props.mode === 'edit' ? 'Edit a' : 'Add a new'}}  Joke</h3>
             <p class="subtitle">
                 Please fill in the fields below to add your custom joke 🎭
             </p>
