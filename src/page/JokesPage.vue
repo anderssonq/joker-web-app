@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, defineAsyncComponent, computed } from 'vue';
+import { MODE_NONE } from '@/const';
 
 const AppHeader = defineAsyncComponent(() => import('@/components/atoms/AppHeader.vue'));
 const AppJokeList = defineAsyncComponent(() => import('@/components/organisms/AppJokeList.vue'));
@@ -16,7 +17,7 @@ onMounted(async () => {
   await loadJokes();
 });
 
-const isEmpty = computed(() => getModeForm() === 'none' && getJokes().length === 0);
+const isEmpty = computed(() => getModeForm() === MODE_NONE && getJokes().length === 0);
 </script>
 
 <template>
@@ -24,7 +25,7 @@ const isEmpty = computed(() => getModeForm() === 'none' && getJokes().length ===
   <main class="app-main" :class="{ 'app-main--empty': isEmpty }">
     <AppToolBar />
     <Transition name="slide" mode="out-in">
-      <AppJokeList v-if="getModeForm() === 'none'" key="joke-list" />
+      <AppJokeList v-if="getModeForm() === MODE_NONE" key="joke-list" />
       <AppFormJoke v-else :mode="getModeForm()" key="joke-form" />
     </Transition>
   </main>

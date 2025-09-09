@@ -6,12 +6,13 @@ const AppRating = defineAsyncComponent(() => import('@/components/atoms/AppRatin
 
 import { useJokesStore } from '../../stores/jokes';
 import { confirmModal } from '@/utils';
+import { MODE_EDIT } from '@/const';
 
 const store = useJokesStore();
 const { setJokeRatingById, setJokeId, removeJokeById, setModeForm } = store;
 
 interface Props {
-    id?: number;
+    id: number;
     type: string;
     setup: string;
     punchline: string;
@@ -39,7 +40,7 @@ function handleRemovingSelected() {
 }
 function handleEditingSelected() {
     setJokeId(props.id as number);
-    setModeForm('edit');
+    setModeForm(MODE_EDIT);
 }
 
 </script>

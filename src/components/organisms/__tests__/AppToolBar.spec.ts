@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
 import AppToolBar from '@/components/organisms/AppToolBar.vue'
+import { MODE_CREATE, MODE_NONE } from '@/const'
 
 const mockLoadJokeTypes = vi.fn()
 const mockSetTypeSelected = vi.fn()
@@ -90,7 +91,7 @@ beforeEach(() => {
   mockGetSortTypes.mockReturnValue(['alphabetical', 'reverse'])
   mockGetSortBy.mockReturnValue('alphabetical')
   mockGetPerPage.mockReturnValue(5)
-  mockGetModeForm.mockReturnValue('none')
+  mockGetModeForm.mockReturnValue(MODE_NONE)
   mockGetLoading.mockReturnValue(false)
 })
 
@@ -144,7 +145,7 @@ describe('AppToolBar', () => {
   })
 
   it('add button enabled when mode != create and calls setModeForm', async () => {
-    mockGetModeForm.mockReturnValue('none')
+    mockGetModeForm.mockReturnValue(MODE_NONE)
     const w = await mountToolBar()
     const addBtn = w.find('.app-button[data-text="Add a new Joke 😜"]')
     expect(addBtn.attributes('disabled')).toBeUndefined()
@@ -153,7 +154,7 @@ describe('AppToolBar', () => {
   })
 
   it('add button disabled when mode == create', async () => {
-    mockGetModeForm.mockReturnValue('create')
+    mockGetModeForm.mockReturnValue(MODE_CREATE)
     const w = await mountToolBar()
     const addBtn = w.find('.app-button[data-text="Add a new Joke 😜"]')
     expect(addBtn.attributes('disabled')).toBeDefined()

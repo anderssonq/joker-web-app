@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { defineAsyncComponent } from 'vue';
+import { MODE_CREATE } from '@/const';
+import type { SortBy } from '@/types';
 
 const AppCard = defineAsyncComponent(() => import('@/components/atoms/AppCard.vue'));
 const AppDropdown = defineAsyncComponent(() => import('@/components/molecules/AppDropdown.vue'));
@@ -9,7 +11,6 @@ const AppPagination = defineAsyncComponent(() => import('@/components/molecules/
 const AppSkeleton = defineAsyncComponent(() => import('@/components/atoms/AppSkeleton.vue'));
 
 import { useJokesStore } from '../../stores/jokes';
-import type { SortBy } from '@/types';
 
 const store = useJokesStore();
 const { loadJokeTypes, setTypeSelected, getTypeSelected, setSortBy, getSortBy, getSortTypes, setPerPage, getPerPage, setModeForm, getModeForm, getLoading } = store;
@@ -49,8 +50,8 @@ const handleSelectPerPage = (perPage: string) => {
                     @handleSelect="handleSelectSort" />
                 <AppDropdown title="Number of jokes per page" :items="[2, 5, 10]" :itemSelected="getPerPage()"
                     @handleSelect="handleSelectPerPage" />
-                <AppButton :text="`Add a new Joke 😜`" @click="setModeForm('create')"
-                    :disabled="getModeForm() === 'create'" />
+                <AppButton :text="`Add a new Joke 😜`" @click="setModeForm(MODE_CREATE)"
+                    :disabled="getModeForm() === MODE_CREATE" />
             </div>
             <div class="tool-bar-footer">
                 <AppPagination :maxVisiblePages="5" />

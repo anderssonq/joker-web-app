@@ -10,6 +10,7 @@ import { useJokesStore } from '../../stores/jokes';
 import type { ModeForm } from '@/types';
 import { confirmModal } from '@/utils';
 import type { Joke } from '@/interfaces/joke.interface';
+import { MODE_CREATE, MODE_EDIT, MODE_NONE } from '@/const';
 
 const store = useJokesStore();
 const { setModeForm, getTypes, addJoke, getJokes, getJokeId, updateJoke } = store;
@@ -19,7 +20,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    mode: 'none',
+    mode: MODE_NONE,
 });
 
 const jokeForm = ref<Joke>({
@@ -30,7 +31,7 @@ const jokeForm = ref<Joke>({
 });
 
 onBeforeMount(() => {
-    if (props.mode === 'edit') {
+    if (props.mode === MODE_EDIT) {
         const joke = getJokes().find(joke => joke.id === getJokeId());
         if (joke) {
             jokeForm.value = {
@@ -52,15 +53,15 @@ const handleSelectType = (type: string) => {
 };
 
 const handleActionBtn = () => {
-    const confirm = confirmModal(`Are you sure you want to ${props.mode === 'edit' ? 'update' : 'add'} this joke? 🤡`);
+    const confirm = confirmModal(`Are you sure you want to ${props.mode === MODE_EDIT ? 'update' : 'add'} this joke? 🤡`);
     if (!confirm) return;
-    if (props.mode === 'create' && isValidForm()) {
+    if (props.mode === MODE_CREATE && isValidForm()) {
         addJoke(jokeForm.value);
     }
-    if (props.mode === 'edit' && isValidForm()) {
+    if (props.mode === MODE_EDIT && isValidForm()) {
         updateJoke(jokeForm.value.id as number, { ...jokeForm.value });
     }
-    setModeForm('none');
+    setModeForm(MODE_NONE);
 };
 
 </script>
@@ -68,7 +69,7 @@ const handleActionBtn = () => {
 <template>
     <AppCard>
         <div class="joke-form">
-            <h3>{{props.mode === 'edit' ? 'Edit a' : 'Add a new'}}  Joke</h3>
+            <h3>{{props.mode === MODE_EDIT ? 'Edit a' : 'Add a new'}}  Joke</h3>
             <p class="subtitle">
                 Please fill in the fields below to add your custom joke 🎭
             </p>
@@ -90,8 +91,8 @@ const handleActionBtn = () => {
             </div>
 
             <div class="form-actions">
-                <AppButton color="green" :text="props.mode === 'edit' ? 'Update Joke' : 'Save Joke'" @click="handleActionBtn" :disabled="!isValidForm()" />
-                <AppButton color="red" text="Cancel" @click="setModeForm('none')" />
+                <AppButton color="green" :text="props.mode === MODE_EDIT ? 'Update Joke' : 'Save Joke'" @click="handleActionBtn" :disabled="!isValidForm()" />
+                <AppButton color="red" text="Cancel" @click="setModeForm(MODE_NONE)" />
             </div>
         </div>
     </AppCard>

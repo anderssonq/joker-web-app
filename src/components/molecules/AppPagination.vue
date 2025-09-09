@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { defineAsyncComponent } from 'vue';
+import { defineAsyncComponent, computed } from 'vue';
 const AppButton = defineAsyncComponent(() => import('@/components/atoms/AppButton.vue'));
-
-import { computed } from 'vue';
 
 import { useJokesStore } from '../../stores/jokes';
 
@@ -10,7 +8,7 @@ const store = useJokesStore();
 const { getTotalPages, getCurrentPage, setCurrentPage } = store;
 
 interface Props {
-  maxVisiblePages?: number
+  maxVisiblePages: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -41,25 +39,18 @@ function goToPage(page: number) {
   }
 }
 
-function goToPrevious() {
-  goToPage(getCurrentPage() - 1)
-}
-
-function goToNext() {
-  goToPage(getCurrentPage() + 1)
-}
 </script>
 
 <template>
   <div class="app-pagination">
-    <AppButton text="Previous" color="purple" @click="goToPrevious" :disabled="getCurrentPage() === 1" />
+    <AppButton text="Previous" color="purple" @click="goToPage(getCurrentPage() - 1)" :disabled="getCurrentPage() === 1" />
 
     <div class="pagination-pages">
       <AppButton v-for="page in visiblePages" :key="page" :text="page.toString()"
         :color="page === getCurrentPage() ? 'green' : 'purple'" @click="goToPage(page)" />
     </div>
 
-    <AppButton text="Next" color="purple" @click="goToNext" :disabled="getCurrentPage() === getTotalPages()" />
+    <AppButton text="Next" color="purple" @click="goToPage(getCurrentPage() + 1)" :disabled="getCurrentPage() === getTotalPages()" />
   </div>
 </template>
 

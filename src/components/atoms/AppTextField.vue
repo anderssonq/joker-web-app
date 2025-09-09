@@ -1,7 +1,7 @@
 <script setup lang="ts">
 interface Props {
   modelValue: string;
-  placeholder?: string;
+  placeholder: string;
   type?: 'text' | 'email' | 'password' | 'number';
   disabled?: boolean;
 }

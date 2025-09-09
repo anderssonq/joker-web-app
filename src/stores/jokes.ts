@@ -190,7 +190,7 @@ export const useJokesStore = defineStore("jokes", () => {
   }
 
   return {
-    // Types
+    // Jokes Types
     loadJokeTypes,
     getTypes: () => types.value,
     setTypeSelected,
