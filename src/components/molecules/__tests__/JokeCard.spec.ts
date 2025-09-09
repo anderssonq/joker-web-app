@@ -1,16 +1,19 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
 import JokeCard from '@/components/molecules/JokeCard.vue'
 
-// Mocks
 const mockSetJokeRatingById = vi.fn()
 const mockRemoveJokeById = vi.fn()
+const mockSetJokeId = vi.fn()
+const mockSetModeForm = vi.fn()
 
 vi.mock('@/stores/jokes', () => ({
   useJokesStore: () => ({
     setJokeRatingById: mockSetJokeRatingById,
-    removeJokeById: mockRemoveJokeById
+    removeJokeById: mockRemoveJokeById,
+    setJokeId: mockSetJokeId,
+    setModeForm: mockSetModeForm
   })
 }))
 
@@ -18,45 +21,57 @@ vi.mock('@/utils', () => ({
   confirmModal: vi.fn(() => true)
 }))
 
+import { confirmModal } from '@/utils'
+
+const confirmMock = confirmModal as unknown as Mock
+
+const defaultProps = {
+  id: 1,
+  type: 'programming',
+  setup: 'Why do programmers prefer dark mode?',
+  punchline: 'Because light attracts bugs!',
+  rating: 3,
+  byUser: false
+}
+
+function mountCard(extraProps: Record<string, unknown> = {}) {
+  return mount(JokeCard, {
+    props: { ...defaultProps, ...extraProps },
+    global: {
+      stubs: {
+        AppButton: {
+          inheritAttrs: false,
+          props: ['text', 'color', 'disabled'],
+          emits: ['click'],
+          template: `<button
+            class="app-button"
+            v-bind="$attrs"
+            :disabled="disabled"
+            @click="$emit('click')"
+          ><slot />{{ text }}</button>`
+        },
+        AppCard: { template: '<div class="app-card"><slot /></div>' },
+        AppRating: {
+          props: ['rating', 'selectable'],
+          emits: ['ratingSelected'],
+          template: `<div class="app-rating" @click="$emit('ratingSelected', 4)">R: {{ rating }}</div>`
+        }
+      }
+    }
+  })
+}
+
 describe('JokeCard', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     vi.clearAllMocks()
+    confirmMock.mockReset()
+    confirmMock.mockReturnValue(true)
   })
-
-  const defaultProps = {
-    id: 1,
-    type: 'programming',
-    setup: 'Why do programmers prefer dark mode?',
-    punchline: 'Because light attracts bugs!',
-    rating: 3,
-    byUser: false
-  }
-
-  function mountCard(extraProps = {}) {
-    return mount(JokeCard, {
-      props: { ...defaultProps, ...extraProps },
-      global: {
-        stubs: {
-          AppButton: {
-            props: ['text', 'color', 'disabled'],
-            template: '<button class="app-button" @click="$emit(\'click\')">{{ text || "Remove" }}</button>'
-          },
-          AppCard: { template: '<div class="app-card"><slot /></div>' },
-          AppRating: {
-            props: ['rating', 'selectable'],
-            emits: ['ratingSelected'],
-            template: '<div class="app-rating" @click="$emit(\'ratingSelected\', 4)">R: {{ rating }}</div>'
-          }
-        }
-      }
-    })
-  }
 
   it('renders with required props', async () => {
     const wrapper = mountCard()
     await flushPromises()
-    expect(wrapper.exists()).toBe(true)
     expect(wrapper.text()).toContain(defaultProps.setup)
     expect(wrapper.text()).toContain(defaultProps.punchline)
     expect(wrapper.text()).toContain(defaultProps.type)
@@ -82,23 +97,34 @@ describe('JokeCard', () => {
   })
 
   it('calls removeJokeById when remove confirmed', async () => {
-    const { confirmModal } = await import('@/utils')
-    vi.mocked(confirmModal).mockReturnValue(true)
+    confirmMock.mockReturnValue(true)
     const wrapper = mountCard()
     await flushPromises()
-    await wrapper.find('.app-button').trigger('click')
-    expect(confirmModal).toHaveBeenCalled()
+    const removeBtn = wrapper.find('.remove-btn')
+    expect(removeBtn.exists()).toBe(true)
+    await removeBtn.trigger('click')
+    expect(confirmMock).toHaveBeenCalled()
     expect(mockRemoveJokeById).toHaveBeenCalledWith(defaultProps.id)
   })
 
   it('does not call removeJokeById when remove cancelled', async () => {
-    const { confirmModal } = await import('@/utils')
-    vi.mocked(confirmModal).mockReturnValue(false)
+    confirmMock.mockReturnValue(false)
     const wrapper = mountCard()
     await flushPromises()
-    await wrapper.find('.app-button').trigger('click')
-    expect(confirmModal).toHaveBeenCalled()
+    const removeBtn = wrapper.find('.remove-btn')
+    await removeBtn.trigger('click')
+    expect(confirmMock).toHaveBeenCalled()
     expect(mockRemoveJokeById).not.toHaveBeenCalled()
+  })
+
+  it('edit button sets joke id and switches mode', async () => {
+    const wrapper = mountCard()
+    await flushPromises()
+    const editBtn = wrapper.find('.edit-btn')
+    expect(editBtn.exists()).toBe(true)
+    await editBtn.trigger('click')
+    expect(mockSetJokeId).toHaveBeenCalledWith(defaultProps.id)
+    expect(mockSetModeForm).toHaveBeenCalledWith('edit')
   })
 
   it('handles long text content', async () => {

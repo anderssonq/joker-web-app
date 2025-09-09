@@ -8,7 +8,7 @@ import { useJokesStore } from '../../stores/jokes';
 import { confirmModal } from '@/utils';
 
 const store = useJokesStore();
-const { setJokeRatingById, removeJokeById } = store;
+const { setJokeRatingById, setJokeId, removeJokeById, setModeForm } = store;
 
 interface Props {
     id?: number;
@@ -37,6 +37,10 @@ function handleRemovingSelected() {
     if (!confirm) return;
     removeJokeById(props.id as number);
 }
+function handleEditingSelected() {
+    setJokeId(props.id as number);
+    setModeForm('edit');
+}
 
 </script>
 
@@ -55,7 +59,20 @@ function handleRemovingSelected() {
                     <div class="rating">
                         <AppRating :rating="props.rating" @ratingSelected="handleRatingSelected" />
                     </div>
-                    <AppButton class="remove-btn" color="red" text="Remove" @click="handleRemovingSelected" />
+                    <div class="actions">
+                        <AppButton 
+                            class="edit-btn" 
+                            text="Edit" 
+                            color="purple" 
+                            @click="handleEditingSelected" 
+                        />
+                        <AppButton 
+                            class="remove-btn" 
+                            text="Remove" 
+                            color="red" 
+                            @click="handleRemovingSelected" 
+                        />
+                    </div>
                 </div>
             </div>
         </AppCard>
@@ -104,18 +121,28 @@ function handleRemovingSelected() {
 
 .joke-card-actions {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 0.75rem;
     margin-top: 0.75rem;
 }
 
+/* Push actions group to the right while rating stays left */
 .joke-card-actions .rating {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    margin-right: auto;
 }
 
-.joke-card-actions .remove-btn {
-    margin-left: auto;
+.joke-card-actions .actions {
+    display: flex;
+    gap: 0.5rem;
 }
+
+/* Remove old margin-left auto so buttons sit side by side */
+.joke-card-actions .remove-btn,
+.joke-card-actions .edit-btn {
+    margin-left: 0;
+}
+
 </style>

@@ -8,6 +8,7 @@ import { JOKES_CACHE_KEY, TYPES_CACHE_KEY } from "@/const";
 
 export const useJokesStore = defineStore("jokes", () => {
   const jokes = ref<Joke[]>([]);
+  const jokeId = ref<number>(-1);
   const formMode = ref<ModeForm>("none");
 
   const types = ref<string[]>([]);
@@ -101,6 +102,17 @@ export const useJokesStore = defineStore("jokes", () => {
     saveToLocalStorage(JOKES_CACHE_KEY, _jokes);
   }
 
+  function updateJoke(id: number, joke: Joke) {
+    const _jokes = getJokes();
+    const index = _jokes.findIndex((j) => j.id === id);
+    if (index !== -1) {
+      const _jokeUpdated = { ..._jokes[index], ...joke, id, byUser: true };
+      _jokes[index] = _jokeUpdated;
+      setJokes(_jokes);
+      saveToLocalStorage(JOKES_CACHE_KEY, _jokes);
+    }
+  }
+
   function removeJokeById(id: number) {
     const _jokes = getJokes();
     const jokeIndex = _jokes.findIndex((joke) => joke.id === id);
@@ -187,6 +199,14 @@ function getTotalPages(): number {
     return sortTypes;
   }
 
+  function setJokeId(_jokeId: number) {
+    jokeId.value = _jokeId;
+  }
+
+  function getJokeId(): number {
+    return jokeId.value;
+  }
+
   function setJokes(_jokes: Joke[]) {
     jokes.value = _jokes;
   }
@@ -262,8 +282,11 @@ function getTotalPages(): number {
 
     // jokes mutation
     addJoke,
+    updateJoke,
     setJokeRatingById,
     removeJokeById,
+    setJokeId,
+    getJokeId,
 
     // jokes form mode
     setModeForm,

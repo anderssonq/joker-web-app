@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineAsyncComponent } from 'vue';
+import { ref, defineAsyncComponent, onBeforeMount } from 'vue';
 
 const AppCard = defineAsyncComponent(() => import('@/components/atoms/AppCard.vue'));
 const AppButton = defineAsyncComponent(() => import('@/components/atoms/AppButton.vue'));
@@ -9,9 +9,10 @@ const AppDropdown = defineAsyncComponent(() => import('@/components/molecules/Ap
 import { useJokesStore } from '../../stores/jokes';
 import type { ModeForm } from '@/types';
 import { confirmModal } from '@/utils';
+import type { Joke } from '@/interfaces/joke.interface';
 
 const store = useJokesStore();
-const { setModeForm, getTypes, addJoke } = store;
+const { setModeForm, getTypes, addJoke, getJokes, getJokeId, updateJoke } = store;
 
 interface Props {
     mode: ModeForm;
@@ -21,12 +22,27 @@ const props = withDefaults(defineProps<Props>(), {
     mode: 'none',
 });
 
-const jokeForm = ref({
+const jokeForm = ref<Joke>({
+    id: 0,
     type: 'general',
     setup: '',
     punchline: '',
 });
 
+onBeforeMount(() => {
+    if (props.mode === 'edit') {
+        const joke = getJokes().find(joke => joke.id === getJokeId());
+        if (joke) {
+            jokeForm.value = {
+                id: joke.id,
+                type: joke.type,
+                setup: joke.setup,
+                punchline: joke.punchline,
+            };
+        }
+        return;
+    }
+});
 const isValidForm = () => {
     return jokeForm.value.type !== '' && jokeForm.value.setup.trim() !== '' && jokeForm.value.punchline.trim() !== '';
 };
@@ -36,10 +52,13 @@ const handleSelectType = (type: string) => {
 };
 
 const handleActionBtn = () => {
-    const confirm = confirmModal('Are you sure you want to save this joke? 🥸');
+    const confirm = confirmModal(`Are you sure you want to ${props.mode === 'edit' ? 'update' : 'add'} this joke? 🤡`);
     if (!confirm) return;
     if (props.mode === 'create' && isValidForm()) {
         addJoke(jokeForm.value);
+    }
+    if (props.mode === 'edit' && isValidForm()) {
+        updateJoke(jokeForm.value.id as number, { ...jokeForm.value });
     }
     setModeForm('none');
 };
@@ -71,7 +90,7 @@ const handleActionBtn = () => {
             </div>
 
             <div class="form-actions">
-                <AppButton color="green" text="Save Joke" @click="handleActionBtn" :disabled="!isValidForm()" />
+                <AppButton color="green" :text="props.mode === 'edit' ? 'Update Joke' : 'Save Joke'" @click="handleActionBtn" :disabled="!isValidForm()" />
                 <AppButton color="red" text="Cancel" @click="setModeForm('none')" />
             </div>
         </div>
