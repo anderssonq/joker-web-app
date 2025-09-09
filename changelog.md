@@ -28,6 +28,7 @@ How to use unreleased title:
 
 ## [Unreleased]
 ### Added
+- [TEST-14](https://skyagile.atlassian.net/browse/TEST-14) :sparkles: refactor(pagination, store, style): migrate pagination logic to usePagination, add sortedAndFilteredJokes computed, comparators map, by-user handling, reactive total pages and some styling improved at Buttons.
 - [TEST-13](https://skyagile.atlassian.net/browse/TEST-13) :sparkles: feat(jokes): add edit joke feature and update tests
 - [TEST-12](https://skyagile.atlassian.net/browse/TEST-12) :white_check_mark: test(components): add App async JokesPage loading spec and created some unit test on molecules components
 - [TEST-11](https://skyagile.atlassian.net/browse/TEST-11) :white_check_mark: test(components): add comprehensive unit tests for atomic atoms components
