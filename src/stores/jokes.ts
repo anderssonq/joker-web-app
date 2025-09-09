@@ -83,9 +83,12 @@ export const useJokesStore = defineStore("jokes", () => {
       return _types;
     } catch (error: Error | unknown) {
       const _error = (error as Error).message || "Error fetching joke types";
+      const defaultTypes = ['general', 'programming', 'knock-knock', 'dad'];
+      setTypeSelected(defaultTypes[0]);
+      setTypes(defaultTypes);
       setError(_error);
       console.error(_error);
-      return [];
+      return defaultTypes;
     } finally {
       setLoading(false);
     }

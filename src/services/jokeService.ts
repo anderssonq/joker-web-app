@@ -13,28 +13,3 @@ export async function getJokesAll(): Promise<Joke[]> {
   if (!res.ok) throw new Error("Error fetching jokes");
   return await res.json();
 }
-
-export async function getPaginatedJokes(
-  page: number,
-  pageSize: number,
-  type: string = "random"
-): Promise<Joke[]> {
-  const res = await fetch(`${BASE_URL}/jokes/${type}/${page * pageSize}`);
-  if (!res.ok) throw new Error("Error fetching jokes");
-  const jokes: Joke[] = await res.json();
-  const start = (page - 1) * pageSize;
-  return jokes.slice(start, start + pageSize);
-}
-
-export async function getJokesByType(
-  type: string,
-  count: number = 1
-): Promise<Joke[]> {
-  let endpoint = `${BASE_URL}/jokes/${type}/random`;
-  if (count > 1) {
-    endpoint = `${BASE_URL}/jokes/${type}/ten`;
-  }
-  const res = await fetch(endpoint);
-  if (!res.ok) throw new Error("Error fetching jokes by type");
-  return await res.json();
-}

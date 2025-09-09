@@ -28,6 +28,7 @@ How to use unreleased title:
 
 ## [Unreleased]
 ### Added
+- [TEST-16](https://skyagile.atlassian.net/browse/TEST-16) :white_check_mark: test(e2e, trash code): adding e2e basic tests and removing trash code
 - [TEST-15](https://skyagile.atlassian.net/browse/TEST-15) :recycle: refactor(typing): improve code and typing stuff
 - [TEST-14](https://skyagile.atlassian.net/browse/TEST-14) :sparkles: refactor(pagination, store, style): migrate pagination logic to usePagination, add sortedAndFilteredJokes computed, comparators map, by-user handling, reactive total pages and some styling improved at Buttons.
 - [TEST-13](https://skyagile.atlassian.net/browse/TEST-13) :sparkles: feat(jokes): add edit joke feature and update tests
