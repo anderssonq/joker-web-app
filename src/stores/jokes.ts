@@ -191,14 +191,6 @@ function getTotalPages(): number {
     setCurrentPage(1);
   }
 
-  function getSortBy(): SortBy {
-    return sortBy.value;
-  }
-
-  function getSortTypes(): SortBy[] {
-    return sortTypes;
-  }
-
   function setJokeId(_jokeId: number) {
     jokeId.value = _jokeId;
   }
@@ -217,10 +209,6 @@ function getTotalPages(): number {
 
   function setModeForm(_mode: ModeForm) {
     formMode.value = _mode;
-  }
-
-  function getModeForm(): ModeForm {
-    return formMode.value;
   }
 
   function setPerPage(page: number): void {
@@ -244,41 +232,25 @@ function getTotalPages(): number {
     types.value = _types;
   }
 
-  function getTypes(): string[] {
-    return types.value;
-  }
-
   function setTypeSelected(_type: string) {
     typeSelected.value = _type;
     setCurrentPage(1);
-  }
-
-  function getTypeSelected(): string {
-    return typeSelected.value;
   }
 
   function setLoading(_loading: boolean) {
     loading.value = _loading;
   }
 
-  function getLoading(): boolean {
-    return loading.value;
-  }
-
   function setError(_error: string | null) {
     error.value = _error;
-  }
-
-  function getError(): string | null {
-    return error.value;
   }
 
   return {
     // Joke Types
     loadJokeTypes,
-    getTypes,
+    getTypes: () => types.value,
     setTypeSelected,
-    getTypeSelected,
+    getTypeSelected: () => typeSelected.value,
 
     // jokes mutation
     addJoke,
@@ -290,7 +262,7 @@ function getTotalPages(): number {
 
     // jokes form mode
     setModeForm,
-    getModeForm,
+    getModeForm: () => formMode.value,
 
     // Jokes items
     loadJokes,
@@ -306,12 +278,12 @@ function getTotalPages(): number {
 
     // Sorting
     setSortBy,
-    getSortBy,
-    getSortTypes,
+    getSortBy: () => sortBy.value,
+    getSortTypes: () => sortTypes,
 
     // Loading & Error
     setLoading,
-    getLoading,
-    getError,
+    getLoading: () => loading.value,
+    getError: () => error.value,
   };
 });
