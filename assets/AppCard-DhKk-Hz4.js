@@ -1,0 +1,1 @@
+import{p as s,e as a,f as t,C as c}from"./index-B7WGjRQQ.js";const o={},r={class:"app-card"};function n(e,d){return t(),a("div",r,[c(e.$slots,"default",{},void 0)])}const p=s(o,[["render",n],["__scopeId","data-v-87e57435"]]);export{p as default};
