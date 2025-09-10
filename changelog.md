@@ -28,6 +28,7 @@ How to use unreleased title:
 
 ## [Unreleased]
 ### Added
+- [TASK-18](https://dummycompany.atlassian.net/browse/TASK-18) :recycle: refactor(typing and deployment): improve code and typing stuff preparing to deploy
 - [TASK-17](https://dummycompany.atlassian.net/browse/TASK-17) :memo:test(README.md, changelog.md): adding readme.md
 - [TASK-16](https://dummycompany.atlassian.net/browse/TASK-16) :white_check_mark: test(e2e, trash code): adding e2e basic tests and removing trash code
 - [TASK-15](https://dummycompany.atlassian.net/browse/TASK-15) :recycle: refactor(typing): improve code and typing stuff

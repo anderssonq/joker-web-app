@@ -18,7 +18,7 @@ vi.mock('@/stores/jokes', () => ({
 
 async function mountPagination(props: Record<string, any> = {}) {
   const wrapper = mount(AppPagination, {
-    props,
+    props: { maxVisiblePages: 5, ...props },
     global: {
       stubs: {
         AppButton: {

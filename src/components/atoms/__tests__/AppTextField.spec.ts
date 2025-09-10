@@ -5,7 +5,7 @@ import AppTextField from '@/components/atoms/AppTextField.vue'
 describe('AppTextField', () => {
   it('renders with default props', () => {
     const wrapper = mount(AppTextField, {
-      props: { modelValue: '' }
+      props: { modelValue: '', placeholder: '' }
     })
     
     expect(wrapper.element.tagName).toBe('INPUT')
@@ -33,7 +33,7 @@ describe('AppTextField', () => {
 
   it('displays the correct modelValue', () => {
     const wrapper = mount(AppTextField, {
-      props: { modelValue: 'Hello World' }
+      props: { modelValue: 'Hello World', placeholder: '' }
     })
     
     expect(wrapper.element.value).toBe('Hello World')
@@ -41,7 +41,7 @@ describe('AppTextField', () => {
 
   it('emits update:modelValue when input changes', async () => {
     const wrapper = mount(AppTextField, {
-      props: { modelValue: '' }
+      props: { modelValue: '', placeholder: '' }
     })
     
     await wrapper.setValue('new value')
@@ -52,7 +52,7 @@ describe('AppTextField', () => {
 
   it('handles multiple input changes', async () => {
     const wrapper = mount(AppTextField, {
-      props: { modelValue: '' }
+      props: { modelValue: '', placeholder: '' }
     })
     
     await wrapper.setValue('first')
@@ -71,7 +71,7 @@ describe('AppTextField', () => {
     
     types.forEach(type => {
       const wrapper = mount(AppTextField, {
-        props: { modelValue: '', type }
+        props: { modelValue: '', type, placeholder: '' }
       })
       
       expect(wrapper.attributes('type')).toBe(type)
@@ -80,7 +80,7 @@ describe('AppTextField', () => {
 
   it('handles disabled state correctly', () => {
     const wrapper = mount(AppTextField, {
-      props: { modelValue: '', disabled: true }
+      props: { modelValue: '', disabled: true, placeholder: '' }
     })
     
     expect(wrapper.attributes('disabled')).toBeDefined()
@@ -89,7 +89,7 @@ describe('AppTextField', () => {
 
   it('does not emit when disabled', async () => {
     const wrapper = mount(AppTextField, {
-      props: { modelValue: '', disabled: true }
+      props: { modelValue: '', disabled: true, placeholder: '' }
     })
     
     await wrapper.trigger('input')
@@ -108,7 +108,7 @@ describe('AppTextField', () => {
 
   it('handles empty placeholder', () => {
     const wrapper = mount(AppTextField, {
-      props: { modelValue: '' }
+      props: { modelValue: '', placeholder: '' }
     })
     
     expect(wrapper.attributes('placeholder')).toBe('')
@@ -116,7 +116,7 @@ describe('AppTextField', () => {
 
   it('calls handleInput function on input event', async () => {
     const wrapper = mount(AppTextField, {
-      props: { modelValue: '' }
+      props: { modelValue: '', placeholder: '' }
     })
     
     const input = wrapper.find('input')
@@ -128,7 +128,7 @@ describe('AppTextField', () => {
 
   it('has correct CSS class applied', () => {
     const wrapper = mount(AppTextField, {
-      props: { modelValue: '' }
+      props: { modelValue: '', placeholder: '' }
     })
     
     expect(wrapper.find('.app-textfield').exists()).toBe(true)
@@ -137,7 +137,7 @@ describe('AppTextField', () => {
 
   it('maintains v-model reactivity', async () => {
     const wrapper = mount(AppTextField, {
-      props: { modelValue: 'initial' }
+      props: { modelValue: 'initial', placeholder: ''  }
     })
     
     expect(wrapper.element.value).toBe('initial')
@@ -149,7 +149,7 @@ describe('AppTextField', () => {
 
   it('handles special characters in input', async () => {
     const wrapper = mount(AppTextField, {
-      props: { modelValue: '' }
+      props: { modelValue: '', placeholder: ''  }
     })
     
     const specialText = '!@#$%^&*()_+-=[]{}|;:,.<>?'
@@ -160,7 +160,7 @@ describe('AppTextField', () => {
 
   it('handles numeric input type', async () => {
     const wrapper = mount(AppTextField, {
-      props: { modelValue: '', type: 'number' }
+      props: { modelValue: '', type: 'number', placeholder: '' }
     })
     
     await wrapper.setValue('123')
