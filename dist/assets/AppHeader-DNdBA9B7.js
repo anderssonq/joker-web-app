@@ -1,1 +1,0 @@
-import{p as e,e as a,f as c}from"./index-B7WGjRQQ.js";const s={},o={class:"app-header"};function r(t,_){return c(),a("header",o," Jokes 🃏 ")}const d=e(s,[["render",r],["__scopeId","data-v-e23d9ef9"]]);export{d as default};
