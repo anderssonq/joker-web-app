@@ -1,5 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
+/* ========================================
+   Settings (tokens)
+======================================== */
 :root {
   --color-primary: #2563EB; /* Azul */
   --color-secondary: #1E293B; /* Gris oscuro */
@@ -28,6 +29,9 @@
   --font-bold: 700;
 }
 
+/* ========================================
+   Base
+======================================== */
 body {
   font-family: var(--font-family);
   font-size: var(--text-base);
@@ -39,6 +43,9 @@ body {
   line-height: 1.5;
 }
 
+/* ========================================
+   Typography
+======================================== */
 h1, .title-xl {
   font-size: var(--text-4xl);
   font-weight: var(--font-bold);
@@ -64,6 +71,9 @@ p, .text-base {
   margin-bottom: 0.75rem;
 }
 
+/* ========================================
+   Utilities
+======================================== */
 .code {
   font-family: 'Fira Code', 'SF Mono', Monaco, Inconsolata, 'Roboto Mono', 'Source Code Pro', monospace;
   font-size: var(--text-sm);

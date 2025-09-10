@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
-import JokeCard from '@/components/molecules/JokeCard.vue'
+import JokeCard from '@/components/molecules/AppJokeCard.vue'
 
 const mockSetJokeRatingById = vi.fn()
 const mockRemoveJokeById = vi.fn()

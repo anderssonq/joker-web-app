@@ -4,8 +4,10 @@ import type {
   TypesCacheData,
 } from "@/interfaces/cache-data.interface";
 
+// Use browser confirm for simplicity; can be replaced with a custom modal but I don't have time
 export const confirmModal = (title: string) => window.confirm(title);
 
+// Generic functions to handle localStorage with caching mechanism
 export function saveToLocalStorage<
   T extends TypesCacheData["data"] | JokesCacheData["data"],
 >(key: string, data: T) {
