@@ -1,0 +1,1 @@
+import{p as s,e as t,f as o,B as a,h as n}from"./index-B7WGjRQQ.js";const c={},r={class:"skeleton"};function d(p,e){return o(),t("span",r,[...e[0]||(e[0]=[a(" ‌ ",-1),n("p",null,"Loading...",-1)])])}const l=s(c,[["render",d],["__scopeId","data-v-48279d4a"]]);export{l as default};
