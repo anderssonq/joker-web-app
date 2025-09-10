@@ -2,6 +2,9 @@
 
 A modern Vue 3 + TypeScript application for browsing, creating, and managing jokes with reactive pagination, filtering, and rating capabilities.
 
+![component diagram](https://github.com/user-attachments/assets/432d923a-0b0e-4049-9b57-aa29d48a5e0e)
+
+
 ## ✨ Features
 
 - 📱 **Responsive Design**: Mobile-first approach with flexible layouts
@@ -273,14 +276,9 @@ npm run preview
 
 ```bash
 # Run unit tests
-npm run test:unit
-
-# Run tests in watch mode
-npm run test:unit:watch
-
-# Generate coverage report
-npm run test:unit:coverage
+npm run test
 ```
+<img width="897" height="502" alt="Screenshot 2025-09-09 at 23 01 13" src="https://github.com/user-attachments/assets/7a0761f1-a5d5-4622-85be-e62760b49a90" />
 
 ### E2E Tests
 
@@ -297,6 +295,8 @@ npm run test:e2e:ui
 # Debug E2E tests
 npm run test:e2e:debug
 ```
+<img width="1287" height="803" alt="Screenshot 2025-09-09 at 23 02 56" src="https://github.com/user-attachments/assets/13a2bf38-986c-4b29-bdc8-ade6722601a6" />
+
 
 ## 📋 Available Scripts
 
@@ -304,11 +304,9 @@ npm run test:e2e:debug
 |---------|-------------|
 | `npm run dev` | Start development server |
 | `npm run build` | Build for production |
-| `npm run preview` | Preview production build |
-| `npm run test:unit` | Run unit tests |
+| `npm run test` | Run unit tests |
 | `npm run test:e2e` | Run E2E tests |
 | `npm run lint` | Lint and fix code |
-| `npm run type-check` | Type checking only |
 
 ## 🎮 Usage Guide
 
