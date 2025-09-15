@@ -28,6 +28,7 @@ How to use unreleased title:
 
 ## [Unreleased]
 
+- [TASK-19](https://dummycompany.atlassian.net/browse/TASK-19) :white_check_mark: test(unit, trash code): adding unit test for AppFormJoke and removing trash code like comments and stuff
 
 ## [1.0.0] - 2025-09-09
 Type: PROD

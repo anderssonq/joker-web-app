@@ -9,7 +9,6 @@ import { useJokesStore } from '../../stores/jokes';
 
 const store = useJokesStore();
 const { paginatedJokes, getLoading } = store;
-// TODO: Add loading and error handling
 
 </script>
 
@@ -26,5 +25,3 @@ const { paginatedJokes, getLoading } = store;
         </AppCard>
     </div>
 </template>
-
-<style scoped></style>
